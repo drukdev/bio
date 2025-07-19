@@ -28,5 +28,6 @@ export const validationSchema = Joi.object({
   AWS_SECRET_ACCESS_KEY: Joi.string().required(),
   CACHE_DEFAULT_EXPIRY: Joi.number().required(),
   CACHE_MAX_LIMIT: Joi.number().required(),
-  REGULA_DATABASE_SERVICE: Joi.string().required()
+  REGULA_DATABASE_SERVICE: Joi.string().required(),
+  DATABASE_URL: Joi.string().required()
 });

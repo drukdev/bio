@@ -10,6 +10,7 @@ import { ResponseType } from '../../common/response.interface';
 import { BiometricReq, PersonDetails, UpdatePersonDetails } from '../interface/person.interface';
 import { S3Service } from '../../aws-s3/s3.service';
 import { IdTypes } from '../../common/IdTypes';
+import { OrganizationService } from '../../organization/services/organization.service';
 import { SearchImageResponse } from '../response/searchResponse';
 import { RpcException } from '@nestjs/microservices';
 import { getDateTime } from '../../common/functions';
@@ -25,9 +26,17 @@ export class BiometricService {
     private readonly systemRepository: SystemRepository,
     private readonly als: AsyncLocalStorage<LoggerClsStore>,
     private readonly ndiLogger: NDILogger,
-    private readonly s3Service: S3Service
+    private readonly s3Service: S3Service,
+    private readonly organizationService: OrganizationService
   ) {}
   public async compareImage(biometricReq: BiometricReq): Promise<ResponseType> {
+    const { orgdid } = biometricReq;
+    const hasBalance = await this.organizationService.checkBalance(orgdid);
+
+    if (!hasBalance) {
+      throw new HttpException('Insufficient balance', HttpStatus.FORBIDDEN);
+    }
+
     switch (biometricReq.idType) {
       case IdTypes.Citizenship:
         return this.compareOneToN(biometricReq);
@@ -156,6 +165,12 @@ export class BiometricService {
         }
         delete compareResult.similarity;
         returnResult.data = { ...compareResult };
+        this.organizationService.logLicenseDetails({
+          orgdid: biometricReq.orgdid,
+          usage: 1,
+          request: biometricReq,
+          response: returnResult,
+        });
       }
     } catch (error) {
       ndiLogger.error(`error in biometric : ${error}`);

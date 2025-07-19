@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 services:
   biometric-service:
     image: ${IMAGE_NAME}
@@ -8,3 +8,17 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ndi_biometric
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

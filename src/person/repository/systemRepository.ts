@@ -122,7 +122,7 @@ export class SystemRepository {
     }
   }
   public checkError(error: Error): void {
-    if (error.toString().includes(CommonConstants.RESP_ERR_HTTP_INVALID_HEADER_VALUE)) {
+    if (error.toString().includes(String(CommonConstants.RESP_ERR_HTTP_INVALID_HEADER_VALUE))) {
       throw new HttpException(
         {
           statusCode: HttpStatus.UNAUTHORIZED,
@@ -131,7 +131,7 @@ export class SystemRepository {
         HttpStatus.UNAUTHORIZED
       );
     }
-    if (error.toString().includes(CommonConstants.RESP_ERR_NOT_FOUND)) {
+    if (error.toString().includes(String(CommonConstants.RESP_ERR_NOT_FOUND))) {
       throw new HttpException(
         {
           statusCode: HttpStatus.NOT_FOUND,
@@ -140,7 +140,7 @@ export class SystemRepository {
         HttpStatus.NOT_FOUND
       );
     }
-    if (error.toString().includes(CommonConstants.RESP_BAD_REQUEST)) {
+    if (error.toString().includes(String(CommonConstants.RESP_BAD_REQUEST))) {
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
@@ -149,7 +149,7 @@ export class SystemRepository {
         HttpStatus.BAD_REQUEST
       );
     }
-    if (error.toString().includes(CommonConstants.RESP_ERR_UNPROCESSABLE_ENTITY)) {
+    if (error.toString().includes(String(CommonConstants.RESP_ERR_UNPROCESSABLE_ENTITY))) {
       throw new HttpException(
         {
           statusCode: HttpStatus.UNPROCESSABLE_ENTITY,

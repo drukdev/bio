@@ -168,8 +168,8 @@ export class BiometricService {
         this.organizationService.logLicenseDetails({
           orgdid: biometricReq.orgdid,
           usage: 1,
-          request: biometricReq,
-          response: returnResult
+          request: JSON.stringify(biometricReq),
+          response: JSON.stringify(returnResult)
         });
       }
     } catch (error) {

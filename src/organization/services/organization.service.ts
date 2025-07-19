@@ -2,33 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../repository/prisma.service';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '@prisma/client';
 import { LicenseDetails } from 'src/common/response.interface';
 
 @Injectable()
 export class OrganizationService {
   constructor(private prisma: PrismaService) {}
 
-  public async create(createOrganizationDto: CreateOrganizationDto): Promise<Organization> {
+  public async create(createOrganizationDto: CreateOrganizationDto): Promise<CreateOrganizationDto> {
     return this.prisma.organization.create({ data: createOrganizationDto });
   }
 
-  public async findAll(): Promise<Organization[]> {
+  public async findAll(): Promise<CreateOrganizationDto[]> {
     return this.prisma.organization.findMany();
   }
 
-  public async findOne(id: string): Promise<Organization> {
+  public async findOne(id: string): Promise<CreateOrganizationDto> {
     return this.prisma.organization.findUnique({ where: { id } });
   }
 
-  public async update(id: string, updateOrganizationDto: UpdateOrganizationDto): Promise<Organization> {
+  public async update(id: string, updateOrganizationDto: UpdateOrganizationDto): Promise<CreateOrganizationDto> {
     return this.prisma.organization.update({
       where: { id },
       data: updateOrganizationDto
     });
   }
 
-  public async remove(id: string): Promise<Organization> {
+  public async remove(id: string): Promise<CreateOrganizationDto> {
     return this.prisma.organization.delete({ where: { id } });
   }
 

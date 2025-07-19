@@ -2,43 +2,45 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { OrganizationService } from '../services/organization.service';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '@prisma/client';
+import { LicenseDetails } from 'src/common/response.interface';
 
 @Controller('organization')
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto) {
+  public async create(@Body() createOrganizationDto: CreateOrganizationDto): Promise<Organization> {
     return this.organizationService.create(createOrganizationDto);
   }
 
   @Get()
-  findAll() {
+  public async findAll(): Promise<Organization[]> {
     return this.organizationService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrganizationDto: UpdateOrganizationDto) {
+  public async update(@Param('id') id: string, @Body() updateOrganizationDto: UpdateOrganizationDto): Promise<Organization> {
     return this.organizationService.update(id, updateOrganizationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.remove(id);
   }
 
   @Post('check-balance')
-  checkBalance(@Body('orgdid') orgdid: string) {
+  public async checkBalance(@Body('orgdid') orgdid: string): Promise<string> {
     return this.organizationService.checkBalance(orgdid);
   }
 
   @Post('log-license')
-  logLicense(@Body() payload: any) {
+  public async logLicense(@Body() payload: LicenseDetails): Promise<string> {
     return this.organizationService.logLicenseDetails(payload);
   }
 }

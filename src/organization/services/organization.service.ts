@@ -2,50 +2,52 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../repository/prisma.service';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '@prisma/client';
+import { LicenseDetails } from 'src/common/response.interface';
 
 @Injectable()
 export class OrganizationService {
   constructor(private prisma: PrismaService) {}
 
-  create(createOrganizationDto: CreateOrganizationDto) {
+  public async create(createOrganizationDto: CreateOrganizationDto): Promise<Organization> {
     return this.prisma.organization.create({ data: createOrganizationDto });
   }
 
-  findAll() {
+  public async findAll(): Promise<Organization[]> {
     return this.prisma.organization.findMany();
   }
 
-  findOne(id: string) {
+  public async findOne(id: string): Promise<Organization> {
     return this.prisma.organization.findUnique({ where: { id } });
   }
 
-  update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
+  public async update(id: string, updateOrganizationDto: UpdateOrganizationDto): Promise<Organization> {
     return this.prisma.organization.update({
       where: { id },
-      data: updateOrganizationDto,
+      data: updateOrganizationDto
     });
   }
 
-  remove(id: string) {
+  public async remove(id: string): Promise<Organization> {
     return this.prisma.organization.delete({ where: { id } });
   }
 
-  async checkBalance(orgdid: string): Promise<boolean> {
+  public async checkBalance(orgdid: string): Promise<string> {
     const organization = await this.prisma.organization.findUnique({
-      where: { orgdid },
+      where: { orgdid }
     });
 
-    if (organization && organization.balance > 0) {
-      return true;
+    if (organization && 0 < organization.balance) {
+      return 'true';
     }
 
-    return false;
+    return 'false';
   }
 
-  async logLicenseDetails(payload: any) {
-    const { orgdid, usage, request, response } = payload;
+  public async logLicenseDetails(payload: LicenseDetails): Promise<string> {
+    const { orgdid, request, response } = payload;
     const organization = await this.prisma.organization.findUnique({
-      where: { orgdid },
+      where: { orgdid }
     });
 
     if (organization) {
@@ -53,17 +55,18 @@ export class OrganizationService {
         where: { orgdid },
         data: {
           balance: organization.balance - 1,
-          usage: organization.usage + 1,
-        },
+          usage: organization.usage + 1
+        }
       });
 
       await this.prisma.log.create({
         data: {
           organizationId: organization.id,
           request,
-          response,
-        },
+          response
+        }
       });
     }
+    return 'true';
   }
 }

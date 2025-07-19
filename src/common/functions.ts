@@ -24,7 +24,7 @@ export const pagination = (
 
 export const isNum = (val: string): boolean => /\d/.test(val);
 
-export const isJson = (str): boolean => {
+export const isJson = (str: string): boolean => {
   try {
     JSON.parse(str);
   } catch (e) {

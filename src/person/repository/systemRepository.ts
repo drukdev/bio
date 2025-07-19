@@ -121,7 +121,7 @@ export class SystemRepository {
       this.checkError(error);
     }
   }
-  checkError(error): void {
+  public checkError(error: Error): void {
     if (error.toString().includes(CommonConstants.RESP_ERR_HTTP_INVALID_HEADER_VALUE)) {
       throw new HttpException(
         {

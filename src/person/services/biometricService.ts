@@ -169,7 +169,7 @@ export class BiometricService {
           orgdid: biometricReq.orgdid,
           usage: 1,
           request: biometricReq,
-          response: returnResult,
+          response: returnResult
         });
       }
     } catch (error) {

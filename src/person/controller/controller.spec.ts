@@ -19,14 +19,14 @@ describe('PersonController', () => {
         {
           provide: BiometricService,
           useValue: {
-            compareImage: jest.fn(),
-          },
+            compareImage: jest.fn()
+          }
         },
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn(),
-          },
+            get: jest.fn()
+          }
         },
         {
           provide: NDILogger,
@@ -34,34 +34,34 @@ describe('PersonController', () => {
             getLoggerInstance: jest.fn().mockReturnValue({
               log: jest.fn(),
               debug: jest.fn(),
-              error: jest.fn(),
-            }),
-          },
+              error: jest.fn()
+            })
+          }
         },
         {
           provide: AsyncLocalStorage,
           useValue: {
             getStore: jest.fn(),
-            run: jest.fn(),
-          },
+            run: jest.fn()
+          }
         },
         {
           provide: BiometricRepository,
-          useValue: {},
+          useValue: {}
         },
         {
           provide: SystemRepository,
-          useValue: {},
+          useValue: {}
         },
         {
           provide: S3Service,
-          useValue: {},
+          useValue: {}
         },
         {
           provide: OrganizationService,
-          useValue: {},
-        },
-      ],
+          useValue: {}
+        }
+      ]
     }).compile();
 
     controller = module.get<PersonController>(PersonController);

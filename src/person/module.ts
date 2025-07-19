@@ -13,6 +13,9 @@ import { SystemRepository } from './repository/systemRepository';
 import { BiometricService } from './services/biometricService';
 import { S3Service } from '../aws-s3/s3.service';
 import { DCRCAuthModule } from '../auth-token/DCRCAuthModule';
+import { OrganizationModule } from '../organization/organization.module';
+import { OrganizationService } from '../organization/services/organization.service';
+import { PrismaService } from '../organization/repository/prisma.service';
 
 
 @Module({
@@ -29,9 +32,10 @@ import { DCRCAuthModule } from '../auth-token/DCRCAuthModule';
     NestjsFormDataModule,
     AlsModule,
     LoggerModule,
-    DCRCAuthModule
+    DCRCAuthModule,
+    OrganizationModule
   ],
   controllers: [PersonController],
-  providers: [BiometricService, NATSClientService, BiometricRepository, SystemRepository, S3Service]
+  providers: [BiometricService, NATSClientService, BiometricRepository, SystemRepository, S3Service, OrganizationService, PrismaService]
 })
 export class PersonModule {}

@@ -12,6 +12,7 @@ import { HealthController } from './health/health.controller';
 import { NDILogger } from './logger/logger.service';
 import { LoggerClsStore } from './logger/logger.store';
 import { PersonModule } from './person/module';
+import { OrganizationModule } from './organization/organization.module';
 import ExceptionHandler from './common/exception.handler';
 import { S3Module } from './aws-s3/s3.module';
 import { allowedHTTPMethods } from './common/constants';
@@ -29,7 +30,8 @@ import { allowedHTTPMethods } from './common/constants';
     AuthModule,
     AlsModule,
     LoggerModule,
-    S3Module
+    S3Module,
+    OrganizationModule
   ],
   controllers: [HealthController],
   providers: [

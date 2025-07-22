@@ -30,13 +30,6 @@ export class BiometricService {
     private readonly organizationService: OrganizationService
   ) {}
   public async compareImage(biometricReq: BiometricReq): Promise<ResponseType> {
-    const { orgdid } = biometricReq;
-    const hasBalance = await this.organizationService.checkBalance(orgdid);
-
-    if (!hasBalance) {
-      throw new HttpException('Insufficient balance', HttpStatus.FORBIDDEN);
-    }
-
     switch (biometricReq.idType) {
       case IdTypes.Citizenship:
         return this.compareOneToN(biometricReq);
@@ -163,14 +156,23 @@ export class BiometricService {
           returnResult.statusCode = HttpStatus.BAD_REQUEST;
           returnResult.error = 'Invalid Biometric';
         }
+        const similarityScore = compareResult.similarity;
         delete compareResult.similarity;
         returnResult.data = { ...compareResult };
-        this.organizationService.logLicenseDetails({
-          orgdid: biometricReq.orgdid,
-          usage: 1,
-          request: biometricReq,
-          response: returnResult
-        });
+
+        // Run in background
+        (async () => {
+          const organization = await this.organizationService.findOne(biometricReq.orgdid);
+          if (organization) {
+            await this.organizationService.updateAndLogOrganization({
+              orgdid: biometricReq.orgdid,
+              usage: organization.usage + 1,
+              balance: organization.balance - 1,
+              similarityScore,
+              threadid: 'some-thread-id' // You need to generate a unique threadid
+            });
+          }
+        })();
       }
     } catch (error) {
       ndiLogger.error(`error in biometric : ${error}`);

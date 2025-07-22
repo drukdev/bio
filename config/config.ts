@@ -10,7 +10,7 @@ export const config = () => ({
   CACHE_DEFAULT_EXPIRY: process.env.CACHE_DEFAULT_EXPIRY,
   CACHE_MAX_LIMIT: process.env.CACHE_MAX_LIMIT,
   REGULA_DATABASE_SERVICE: process.env.REGULA_DATABASE_SERVICE,
-  DATABASE_URL: process.env.DATABASE_URL
+  DATABASE_URL: process.env.DATABASE_URL,
   nats: {
     url: process.env.NATS_URL,
     NKEY_SEED: process.env.NKEY_SEED

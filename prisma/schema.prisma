@@ -23,10 +23,12 @@ model Organization {
 }
 
 model Log {
-  id             String       @id @default(uuid())
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  request        Json
-  response       Json
-  createdAt      DateTime     @default(now())
+  id              String       @id @default(uuid())
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  request         Json?
+  response        Json?
+  threadid        String?
+  similarityScore Float?
+  createdAt       DateTime     @default(now())
 }

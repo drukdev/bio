@@ -14,3 +14,10 @@ export interface retryOptions {
   minTimeout: number;
   onRetry: (e: { message: string }, attempt: number) => void;
 }
+
+export interface LicenseDetails {
+  orgdid: string;
+  usage: number;
+  request: string;
+  response: string;
+}
